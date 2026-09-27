@@ -230,10 +230,10 @@ function sceneRelativity(g, t, D) {
     for (let i = 0; i < 3; i++) g.strokeStyle = C.hairline;
     text(g, '≈ 1 muon', 1020, 925, { size: 44, weight: 500, family: MONO, alpha: fa });
     text(g, 'per cm² per minute at sea level', 1020, 965, { size: 26, weight: 500, color: C.muted, alpha: fa });
-    const bx = 1560, by = 880; g.save(); g.globalAlpha *= fa; g.strokeStyle = C.phosphor; g.lineWidth = 3; g.strokeRect(bx, by, 90, 90); g.restore();
-    text(g, '1 cm²', bx + 45, by + 116, { size: 20, family: MONO, weight: 400, color: C.muted, align: 'center', alpha: fa });
+    const bx = 1660, by = 885; g.save(); g.globalAlpha *= fa; g.strokeStyle = C.phosphor; g.lineWidth = 3; g.strokeRect(bx, by, 80, 80); g.restore();
+    text(g, '1 cm²', bx - 18, by + 48, { size: 22, family: MONO, weight: 400, color: C.muted, align: 'right', alpha: fa });
     const blink = win(t % 3, 1.2, 1.8, 0.15);
-    if (t > 8) glowLine(g, bx + 40, by - 20, bx + 52, by + 110, C.lilac, 3, blink, 14);
+    if (t > 8) glowLine(g, bx + 36, by - 12, bx + 46, by + 92, C.lilac, 3, blink, 14);
   }
   cap(g, 'Why muons reach us', 120, 160, { size: 26, color: C.lilac, alpha: ramp(t, 0.2, 0.8) });
   text(g, 'Lifetime: 2.2 microseconds', 1180, 190, { size: 40, weight: 700, alpha: ramp(t, 0.6, 1.4) });
@@ -319,7 +319,8 @@ function sceneDetection(g, t, D) {
     g.stroke(); g.restore();
     if (crossX.length) {
       const ha = ramp(t, 6.0, 6.4);
-      chip(g, 'HIT → counter', crossX[0] - 10, py + 64, C.phosphor, ha * pa, 24);
+      dot(g, crossX[0], thrY, 7, C.phosphor, ha * pa, 14);
+      chip(g, 'HIT → counter', crossX.at(-1) + 40, thrY - 74, C.phosphor, ha * pa, 24);
     }
     text(g, 'amplified ~100× · compared to a threshold · one digital hit', px + 30, py + ph + 44, { size: 22, weight: 500, color: C.muted, alpha: ramp(t, 6.4, 7.2) });
   }

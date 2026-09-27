@@ -38,8 +38,11 @@ function chromePath() {
   console.log(`\nvideo: ${path.relative(ROOT, out)}`);
 
   // audio mix
-  const music = path.join(ROOT, 'build/music.wav');
+  // An ElevenLabs (or any) track saved as audio/music.mp3|wav replaces the generated score.
+  const custom = ['mp3', 'wav', 'm4a'].map(e => path.join(ROOT, 'audio', `music.${e}`)).find(f => fs.existsSync(f));
+  const music = custom || path.join(ROOT, 'build/music.wav');
   if (!fs.existsSync(music)) require('./music');
+  console.log(`music: ${path.relative(ROOT, music)}`);
   const voices = timeline.filter(s => s.voice);
   const inputs = ['-i', out, '-i', music], filters = [];
   voices.forEach((s, k) => { inputs.push('-i', path.join(ROOT, s.voice)); const ms = Math.round((s.voiceStart - from) * 1000);
