@@ -51,7 +51,7 @@ function chromePath() {
   let graph;
   if (voices.length) {
     filters.push(`${voices.map((_, k) => `[v${k}]`).join('')}amix=inputs=${voices.length}:normalize=0,apad,asplit=2[voice][key]`);
-    filters.push(`[1:a]atrim=start=${from},asetpts=PTS-STARTPTS,volume=0.42[bed]`);
+    filters.push(`[1:a]atrim=start=${from},asetpts=PTS-STARTPTS,volume=0.25[bed]`);
     filters.push(`[bed][key]sidechaincompress=threshold=0.02:ratio=8:attack=40:release=600[duck]`);
     filters.push(`[duck][voice]amix=inputs=2:normalize=0,loudnorm=I=-16:TP=-1.5:LRA=11[a]`);
   } else {

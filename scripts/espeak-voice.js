@@ -8,7 +8,7 @@ const { ROOT, script, ffmpeg } = require('./lib');
 
 const args = process.argv.slice(2), opt = (k, d) => args.includes(k) ? args[args.indexOf(k) + 1] : d;
 const VOICE = opt('--voice', 'mb-us1');           // MBROLA US female; alternatives: en-us+f3, en-us+Annie, en-us+linda
-const SPEED = +opt('--speed', 172);               // words per minute
+const SPEED = +opt('--speed', 150);               // words per minute
 const PITCH = +opt('--pitch', 55);                // 0–99, 50 = voice default
 
 const outDir = path.resolve(ROOT, opt('--out', 'audio'));
@@ -21,7 +21,7 @@ fs.mkdirSync(outDir, { recursive: true });
 for (const [i, s] of script.scenes.entries()) {
   if (pick.length && !pick.includes(i + 1)) continue;
   const base = path.join(outDir, `${String(i + 1).padStart(2, '0')}-${s.id}`), raw = base + '.raw.wav';
-  const r = spawnSync('espeak-ng', ['-v', VOICE, '-s', String(SPEED), '-p', String(PITCH), '-g', '1', '-w', raw, say(s.narration)], { encoding: 'utf8' });
+  const r = spawnSync('espeak-ng', ['-v', VOICE, '-s', String(SPEED), '-p', String(PITCH), '-g', '3', '-w', raw, say(s.narration)], { encoding: 'utf8' });
   if (r.status !== 0 || !fs.existsSync(raw)) { console.error(r.stderr || `espeak-ng failed for ${VOICE}`); process.exit(1); }
   // Gentle polish: 48 kHz, trim the hiss above 7 kHz, soften sibilants, a touch of room.
   spawnSync(ffmpeg(), ['-y', '-loglevel', 'error', '-i', raw, '-af',

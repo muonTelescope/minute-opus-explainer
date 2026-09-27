@@ -4,8 +4,8 @@
   "width": 1920,
   "height": 1080,
   "voice": "Lynda - Bright, Inviting, and Clear",
-  "leadIn": 0.5,
-  "tailPad": 0.6,
+  "leadIn": 0.7,
+  "tailPad": 1.0,
   "scenes": [
     {
       "id": "sky",

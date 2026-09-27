@@ -35,7 +35,7 @@ Useful pieces:
 
 ## Narration (current)
 
-The narration is **eSpeak NG with the MBROLA `us1` American female voice**: `node scripts/espeak-voice.js` writes `audio/01-sky.wav` … `audio/06-close.wav` (needs `espeak-ng`, `mbrola`, `mbrola-us1`). Each scene is timed to its clip, and the animation is **time-warped per sentence**: the pauses between sentences are detected in each clip, and the matching visual beats (`anchors` in `src/script.json`) start as that sentence is spoken. Captions use the same sentence timings. The music bed sits at 0.42 and is side-chain ducked under the voice. `scripts/klattsch-voice.mjs` and `scripts/voice.js` (ElevenLabs) remain as alternatives.
+The narration is **eSpeak NG with the MBROLA `us1` American female voice**: `node scripts/espeak-voice.js` writes `audio/01-sky.wav` … `audio/06-close.wav` (needs `espeak-ng`, `mbrola`, `mbrola-us1`). Each scene is timed to its clip, and the animation is **time-warped per sentence**: the pauses between sentences are detected in each clip, and the matching visual beats (`anchors` in `src/script.json`) start as that sentence is spoken. Captions use the same sentence timings. The music bed sits at 0.25 and is side-chain ducked under the voice. `scripts/klattsch-voice.mjs` and `scripts/voice.js` (ElevenLabs) remain as alternatives.
 
 ## Adding the narration
 
