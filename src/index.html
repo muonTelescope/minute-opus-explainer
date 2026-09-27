@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>gLOWCOST explainer</title>
+<style>
+@font-face{font-family:Raleway;font-weight:500;src:url(../assets/fonts/raleway-latin-500-normal.woff2)}
+@font-face{font-family:Raleway;font-weight:600;src:url(../assets/fonts/raleway-latin-600-normal.woff2)}
+@font-face{font-family:Raleway;font-weight:700;src:url(../assets/fonts/raleway-latin-700-normal.woff2)}
+@font-face{font-family:Raleway;font-weight:800;src:url(../assets/fonts/raleway-latin-800-normal.woff2)}
+@font-face{font-family:"IBM Plex Mono";font-weight:400;src:url(../assets/fonts/ibm-plex-mono-latin-400-normal.woff2)}
+@font-face{font-family:"IBM Plex Mono";font-weight:500;src:url(../assets/fonts/ibm-plex-mono-latin-500-normal.woff2)}
+html,body{margin:0;background:#120E1A}
+canvas{display:block;width:100vw;height:auto}
+#bar{position:fixed;left:0;right:0;bottom:0;padding:8px 12px;font:14px system-ui;color:#A89CBF;background:#1C1628cc;display:flex;gap:10px;align-items:center}
+#bar input{flex:1}
+</style></head>
+<body>
+<canvas id="c" width="1920" height="1080"></canvas>
+<div id="bar"><button id="play">Play</button><input id="scrub" type="range" min="0" step="0.01" value="0"><span id="tc">0.0 s</span></div>
+<script src="scenes.js"></script>
+<script>
+// Preview: open over http (npm run preview) to scrub the animation. The renderer
+// hides the bar and calls window.renderFrame directly, frame by frame.
+(async () => {
+  const canvas = document.getElementById('c');
+  let timeline;
+  try { timeline = await (await fetch('../build/timeline.json')).json(); } catch { timeline = null; }
+  if (!timeline) {
+    const script = await (await fetch('script.json')).json(); let s = 0;
+    timeline = script.scenes.map(x => { const e = { id: x.id, start: s, duration: x.seconds, authored: x.seconds }; s += x.seconds; return e; });
+  }
+  window.timeline = timeline;
+  await Promise.all(['500', '600', '700', '800'].map(w => document.fonts.load(`${w} 40px Raleway`)).concat(['400', '500'].map(w => document.fonts.load(`${w} 40px "IBM Plex Mono"`))));
+  await document.fonts.ready;
+  window.ready = true;
+  if (new URLSearchParams(location.search).has('render')) { document.getElementById('bar').remove(); return; }
+  const total = timeline.at(-1).start + timeline.at(-1).duration, scrub = document.getElementById('scrub'), tc = document.getElementById('tc');
+  scrub.max = total; let t = 0, playing = false, last = 0;
+  const draw = () => { window.renderFrame(canvas, timeline, t); scrub.value = t; tc.textContent = t.toFixed(1) + ' s'; };
+  scrub.oninput = () => { t = +scrub.value; draw(); };
+  document.getElementById('play').onclick = e => { playing = !playing; e.target.textContent = playing ? 'Pause' : 'Play'; last = performance.now(); };
+  (function loop(now) { if (playing) { t += (now - last) / 1000; if (t >= total) { t = 0; } } last = now; draw(); requestAnimationFrame(loop); })(performance.now());
+})();
+</script>
+</body></html>

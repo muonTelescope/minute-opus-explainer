@@ -1,0 +1,14 @@
+{
+  "name": "minute-opus-explainer",
+  "private": true,
+  "description": "A one-minute explainer about the gLOWCOST cosmic-muon detector, animated entirely in code.",
+  "scripts": {
+    "timeline": "node -e \"console.table(require('./scripts/lib').buildTimeline())\"",
+    "music": "node scripts/music.js",
+    "captions": "node scripts/captions.js",
+    "preview": "npx --yes http-server -c-1 -o /src/index.html",
+    "render:preview": "node scripts/music.js && node scripts/captions.js && node scripts/render.js --preview",
+    "render": "node scripts/music.js && node scripts/captions.js && node scripts/render.js"
+  },
+  "dependencies": { "playwright-core": "^1.55.0" }
+}

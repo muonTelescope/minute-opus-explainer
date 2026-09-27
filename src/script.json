@@ -1,0 +1,47 @@
+{
+  "title": "gLOWCOST",
+  "fps": 30,
+  "width": 1920,
+  "height": 1080,
+  "voice": "Lynda - Bright, Inviting, and Clear",
+  "leadIn": 0.6,
+  "tailPad": 0.7,
+  "scenes": [
+    {
+      "id": "sky",
+      "seconds": 10,
+      "narration": "Right now, particles from deep space are slamming into the top of our atmosphere. Each collision sets off a shower, and among the debris are muons: heavier cousins of the electron.",
+      "elevenlabs": "Right now, particles from deep space are slamming into the top of our atmosphere. <break time=\"0.4s\" /> Each collision sets off a shower, and among the debris are muons: heavier cousins of the electron."
+    },
+    {
+      "id": "relativity",
+      "seconds": 11,
+      "narration": "A muon lives for just two millionths of a second. That should not be long enough to reach the ground. But they move so close to the speed of light that time stretches for them, and about one crosses every square centimetre of Earth each minute.",
+      "elevenlabs": "A muon lives for just two millionths of a second. <break time=\"0.3s\" /> That should not be long enough to reach the ground. <break time=\"0.3s\" /> But they move so close to the speed of light that time stretches for them, and about one crosses every square centimetre of Earth each minute."
+    },
+    {
+      "id": "detection",
+      "seconds": 11,
+      "narration": "To catch them, we use tiles of special plastic that glow when a muon passes through. Optical fibres carry that faint flash to a silicon photomultiplier, a sensor so sensitive it can respond to single particles of light.",
+      "elevenlabs": "To catch them, we use tiles of special plastic that glow when a muon passes through. <break time=\"0.3s\" /> Optical fibres carry that faint flash to a silicon photomultiplier, a sensor so sensitive it can respond to single particles of light."
+    },
+    {
+      "id": "coincidence",
+      "seconds": 12,
+      "narration": "But these sensors also fire at random, all on their own. So we stack three tiles and only count a muon when two of them flash within the same few hundred billionths of a second. Random noise almost never lines up like that. A real muon does.",
+      "elevenlabs": "But these sensors also fire at random, all on their own. <break time=\"0.3s\" /> So we stack three tiles and only count a muon when two of them flash within the same few hundred billionths of a second. <break time=\"0.3s\" /> Random noise almost never lines up like that. A real muon does."
+    },
+    {
+      "id": "weather",
+      "seconds": 9,
+      "narration": "Count them minute by minute, and something surprising appears. When air pressure rises, there is more air overhead to stop muons, and the count drops.",
+      "elevenlabs": "Count them minute by minute, and something surprising appears. <break time=\"0.3s\" /> When air pressure rises, there is more air overhead to stop muons, and the count drops."
+    },
+    {
+      "id": "close",
+      "seconds": 7,
+      "narration": "A small detector, logging on its own, watching particles made by the universe. This is gLOWCOST.",
+      "elevenlabs": "A small detector, logging on its own, watching particles made by the universe. <break time=\"0.3s\" /> This is gLOW COST."
+    }
+  ]
+}
