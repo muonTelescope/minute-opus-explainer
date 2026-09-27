@@ -481,13 +481,13 @@ function sceneClose(g, t, D) {
   text(g, '/min', fx + 108, fy + 500, { size: 18, weight: 400, family: MONO, color: C.phosphor, alpha: a2 });
   for (let k = 0; k < 3; k++) { const w = chLabel(g, k, fx + 40 + k * 90, fy + 528, { size: 18, alpha: a2 }); text(g, String([19, 16, 21][k]), fx + 44 + k * 90 + w, fy + 535, { size: 18, weight: 500, family: MONO, alpha: a2 }); }
   // title
-  const a3 = ramp(t, 2.6, 3.6);
+  const a3 = ramp(t, 5.4, 6.2);
   muonMark(g, 1240, 372, 76, C.lilac, a3);
   text(g, 'gLOWCOST', 1320, 440, { size: 96, weight: 800, alpha: a3 });
-  text(g, 'a cosmic-muon telescope you can build', 1240, 506, { size: 32, weight: 500, color: C.muted, alpha: ramp(t, 3.2, 4.0) });
-  text(g, 'three paddles · coincidence counting', 1240, 560, { size: 22, weight: 500, family: MONO, color: C.phosphor, alpha: ramp(t, 3.6, 4.4) });
-  text(g, 'logs every minute, with or without a phone', 1240, 594, { size: 22, weight: 500, family: MONO, color: C.phosphor, alpha: ramp(t, 3.8, 4.6) });
-  text(g, 'music: a trio sonata composed from real minute counts · 16 June 2026', 1240, 680, { size: 20, weight: 500, color: C.muted, alpha: ramp(t, 4.6, 5.4) });
+  text(g, 'a cosmic-muon telescope you can build', 1240, 506, { size: 32, weight: 500, color: C.muted, alpha: ramp(t, 5.9, 6.6) });
+  text(g, 'three paddles · coincidence counting', 1240, 560, { size: 22, weight: 500, family: MONO, color: C.phosphor, alpha: ramp(t, 6.3, 7.0) });
+  text(g, 'logs every minute, with or without a phone', 1240, 594, { size: 22, weight: 500, family: MONO, color: C.phosphor, alpha: ramp(t, 6.5, 7.2) });
+  text(g, 'music: a trio sonata composed from real minute counts · 16 June 2026', 1240, 680, { size: 20, weight: 500, color: C.muted, alpha: ramp(t, 3.0, 3.8) });
   g.restore();
 }
 
@@ -499,7 +499,10 @@ window.renderFrame = function (canvas, timeline, t) {
   const g = canvas.getContext('2d');
   g.setTransform(1, 0, 0, 1, 0, 0); g.globalAlpha = 1; g.fillStyle = C.ground; g.fillRect(0, 0, W, H);
   const sc = timeline.find(s => t >= s.start && t < s.start + s.duration) || timeline[timeline.length - 1];
-  const local = (t - sc.start) * sc.authored / sc.duration;
+  // piecewise-linear warp so each sentence's visuals start with its narration
+  const rt = t - sc.start, w = sc.warp || { real: [0, sc.duration], auth: [0, sc.authored] };
+  let k = 0; while (k < w.real.length - 2 && rt > w.real[k + 1]) k++;
+  const local = w.auth[k] + (rt - w.real[k]) * (w.auth[k + 1] - w.auth[k]) / (w.real[k + 1] - w.real[k]);
   g.save(); SCENES[sc.id](g, local, sc.authored); g.restore();
   if (sc.id !== 'close') watermark(g, 1);
   // short dip between scenes

@@ -33,6 +33,10 @@ Useful pieces:
 - `node scripts/render.js --from 20 --to 32` — render a section.
 - `npm run timeline` — scene start times and durations.
 
+## Narration (current)
+
+The narration is **eSpeak NG with the MBROLA `us1` American female voice**: `node scripts/espeak-voice.js` writes `audio/01-sky.wav` … `audio/06-close.wav` (needs `espeak-ng`, `mbrola`, `mbrola-us1`). Each scene is timed to its clip, and the animation is **time-warped per sentence**: the pauses between sentences are detected in each clip, and the matching visual beats (`anchors` in `src/script.json`) start as that sentence is spoken. Captions use the same sentence timings. The music bed sits at 0.42 and is side-chain ducked under the voice. `scripts/klattsch-voice.mjs` and `scripts/voice.js` (ElevenLabs) remain as alternatives.
+
 ## Adding the narration
 
 Follow [ELEVENLABS.md](ELEVENLABS.md), or run `ELEVENLABS_API_KEY=… node scripts/voice.js --confirm`: six clips named `audio/01-sky.mp3` … `audio/06-close.mp3`, then `npm run render`. Each scene is re-timed to its clip (0.6 s lead-in, 0.7 s tail), the music ducks under the voice, the mix is loudness-normalised to −16 LUFS, and the captions are regenerated from the same timings. Scenes without a clip keep their default length.

@@ -50,8 +50,8 @@ function chromePath() {
     filters.push(`[${k + 2}:a]aresample=44100,aformat=channel_layouts=stereo,adelay=${Math.max(0, ms)}|${Math.max(0, ms)}[v${k}]`); });
   let graph;
   if (voices.length) {
-    filters.push(`${voices.map((_, k) => `[v${k}]`).join('')}amix=inputs=${voices.length}:normalize=0,asplit=2[voice][key]`);
-    filters.push(`[1:a]atrim=start=${from},asetpts=PTS-STARTPTS,volume=0.55[bed]`);
+    filters.push(`${voices.map((_, k) => `[v${k}]`).join('')}amix=inputs=${voices.length}:normalize=0,apad,asplit=2[voice][key]`);
+    filters.push(`[1:a]atrim=start=${from},asetpts=PTS-STARTPTS,volume=0.42[bed]`);
     filters.push(`[bed][key]sidechaincompress=threshold=0.02:ratio=8:attack=40:release=600[duck]`);
     filters.push(`[duck][voice]amix=inputs=2:normalize=0,loudnorm=I=-16:TP=-1.5:LRA=11[a]`);
   } else {
@@ -60,7 +60,7 @@ function chromePath() {
   graph = filters.join(';');
   const final = path.join(ROOT, 'build', name ? `${name}.mp4` : preview ? 'gLOWCOST-explainer-preview.mp4' : 'gLOWCOST-explainer.mp4');
   const r = spawnSync(ffmpeg(), ['-y', '-loglevel', 'error', ...inputs, '-filter_complex', graph, '-map', '0:v', '-map', '[a]',
-    '-c:v', 'copy', '-c:a', 'aac', '-ar', '48000', '-b:a', '192k', '-shortest', final], { stdio: 'inherit' });
+    '-c:v', 'copy', '-c:a', 'aac', '-ar', '48000', '-b:a', '192k', '-t', String(to - from), final], { stdio: 'inherit' });
   if (r.status !== 0) process.exit(r.status);
   console.log(`final: ${path.relative(ROOT, final)}  (${voices.length}/${timeline.length} narration clips)`);
 })();
