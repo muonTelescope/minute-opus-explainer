@@ -133,7 +133,7 @@ function sceneSky(g, t, D) {
   band.addColorStop(0, hexA(C.violet, 0.16)); band.addColorStop(0.25, hexA(C.violet, 0.05)); band.addColorStop(1, hexA(C.violet, 0.0));
   g.fillStyle = band; g.fillRect(0, topY - 30, W, gy - topY + 30);
   glowLine(g, 0, topY - 30, W, topY - 30, C.violet, 1.5, 0.35, 6);
-  cap(g, 'Top of the atmosphere · ~15 km up', W - 120, topY - 48, { align: 'right', alpha: ramp(t, 0.6, 1.4) }); if (0) cap(g, '', 0, 0, { alpha: ramp(t, 0.6, 1.4) });
+  cap(g, 'Top of the atmosphere · ~15 km up', W - 120, topY + 44, { align: 'right', alpha: ramp(t, 0.6, 1.4) }); if (0) cap(g, '', 0, 0, { alpha: ramp(t, 0.6, 1.4) });
   // ground
   g.fillStyle = C.panel; g.fillRect(0, gy, W, H - gy); glowLine(g, 0, gy, W, gy, C.hairline, 2, 1, 0);
   cap(g, 'Ground', 120, gy + 46, { alpha: ramp(t, 0.6, 1.4) });
@@ -181,7 +181,7 @@ function sceneSky(g, t, D) {
 // =====================================================================
 function sceneRelativity(g, t, D) {
   backdrop(g, t);
-  const x = 420, top = 180, bot = 950;
+  const x = 420, top = 250, bot = 960;
   // altitude ruler
   glowLine(g, x, top, x, bot, C.hairline, 3, 1, 0);
   for (let km = 0; km <= 15; km += 5) {
@@ -259,9 +259,9 @@ function sceneDetection(g, t, D) {
   text(g, '20 × 20 cm, about 1 cm thick', tx, ty + th + 98, { size: 24, weight: 500, color: C.muted, alpha: ramp(t, 1.0, 1.8) });
 
   // muon crossing
-  const hit = 1.6, mx = tx + 330, crossY = ty + th / 2;
+  const hit = 1.6, mx = tx + 470, crossY = ty + th / 2;
   const mp = ramp(t, hit - 0.8, hit + 0.8);
-  if (mp > 0) glowLine(g, mx - 60, 60, lerp(mx - 60, mx + 60, mp), lerp(60, 1000, mp), C.lilac, 4, 1 - ramp(t, 4, 5) * 0.6, 18);
+  if (mp > 0) glowLine(g, mx - 50, 220, lerp(mx - 50, mx + 50, mp), lerp(220, 1000, mp), C.lilac, 4, 1 - ramp(t, 4, 5) * 0.6, 18);
   // scintillation flash + photons bouncing toward the fibre
   const fl = win(t, hit, hit + 1.0, 0.15);
   if (fl > 0) dot(g, mx, crossY, 60 * fl, C.phosphor, fl * 0.5, 60);
@@ -448,7 +448,7 @@ function sceneWeather(g, t, D) {
   }
   // up/down callout
   const ca = win(t, 3.2, 6.2);
-  text(g, 'pressure up  →  count down', px + pw / 2, py + ph - 20, { size: 30, weight: 700, align: 'center', color: C.ink, alpha: ca });
+  text(g, 'pressure up  →  count down', px + pw / 2, py + 330, { size: 30, weight: 700, align: 'center', color: C.ink, alpha: ca });
   text(g, 'about −0.15 % per hPa (provisional fit) · simulated example, not a measurement', px + pw / 2, py + ph + 56, { size: 22, weight: 500, color: C.muted, align: 'center', alpha: ramp(t, 4.0, 4.8) });
   text(g, '9 days of 1-minute counts, averaged every 3 hours', plotX, py + ph - 20, { size: 20, weight: 500, family: MONO, color: C.muted, alpha: ramp(t, 1.0, 1.8) * (1 - ca) });
 }
@@ -486,6 +486,7 @@ function sceneClose(g, t, D) {
   text(g, 'a cosmic-muon telescope you can build', 1240, 506, { size: 32, weight: 500, color: C.muted, alpha: ramp(t, 3.2, 4.0) });
   text(g, 'three paddles · coincidence counting', 1240, 560, { size: 22, weight: 500, family: MONO, color: C.phosphor, alpha: ramp(t, 3.6, 4.4) });
   text(g, 'logs every minute, with or without a phone', 1240, 594, { size: 22, weight: 500, family: MONO, color: C.phosphor, alpha: ramp(t, 3.8, 4.6) });
+  text(g, 'music: a trio sonata composed from real minute counts · 16 June 2026', 1240, 680, { size: 20, weight: 500, color: C.muted, alpha: ramp(t, 4.6, 5.4) });
   g.restore();
 }
 

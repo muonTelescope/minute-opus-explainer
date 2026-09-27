@@ -39,9 +39,9 @@
     },
     {
       "id": "close",
-      "seconds": 7,
-      "narration": "A small detector, logging on its own, watching particles made by the universe. This is gLOWCOST.",
-      "elevenlabs": "A small detector, logging on its own, watching particles made by the universe. <break time=\"0.3s\" /> This is gLOW COST."
+      "seconds": 9,
+      "narration": "A small detector, logging on its own, watching particles made by the universe. Even this music was shaped by the muons it counted. This is gLOWCOST.",
+      "elevenlabs": "A small detector, logging on its own, watching particles made by the universe. <break time=\"0.3s\" /> Even this music was shaped by the muons it counted. <break time=\"0.4s\" /> This is gLOW COST."
     }
   ]
 }

@@ -2,7 +2,7 @@
 
 **Voice:** Lynda – Bright, Inviting, and Clear
 **Model:** Eleven Multilingual v2 (or v3). Suggested settings: stability ≈ 0.55, similarity ≈ 0.75, style ≈ 0.15, speaker boost on.
-**Output:** MP3 44.1 kHz. Generate **one clip per scene** and save them into `audio/` with exactly these names. Each scene stretches or shrinks to fit its clip, so natural pacing is fine.
+**Output:** MP3 44.1 kHz. With an API key, `node scripts/voice.js` shows exactly what will be sent (dry run) and `node scripts/voice.js --confirm` generates all six clips. Generate **one clip per scene** and save them into `audio/` with exactly these names. Each scene stretches or shrinks to fit its clip, so natural pacing is fine.
 
 Paste each block as-is; `<break>` tags become pauses. "gLOW COST" is written as two words so it is read "glow cost".
 
@@ -33,7 +33,7 @@ Count them minute by minute, and something surprising appears. <break time="0.3s
 
 ### audio/06-close.mp3
 ```
-A small detector, logging on its own, watching particles made by the universe. <break time="0.3s" /> This is gLOW COST.
+A small detector, logging on its own, watching particles made by the universe. <break time="0.3s" /> Even this music was shaped by the muons it counted. <break time="0.4s" /> This is gLOW COST.
 ```
 
 The same text (with `<break>` tags) lives in `src/script.json` → `elevenlabs`; the caption text is `narration`. If you edit one, edit both.
