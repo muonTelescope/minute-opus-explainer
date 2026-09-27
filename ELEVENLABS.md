@@ -1,5 +1,7 @@
 # Narration for ElevenLabs
 
+> **Note:** the current video uses eSpeak NG narration (see README). This file documents the optional ElevenLabs path; its closing line still reads "gLOW COST".
+
 **Voice:** Lynda – Bright, Inviting, and Clear
 **Model:** Eleven Multilingual v2 (or v3). Suggested settings: stability ≈ 0.55, similarity ≈ 0.75, style ≈ 0.15, speaker boost on.
 **Output:** MP3 44.1 kHz. With an API key, `node scripts/voice.js` shows exactly what will be sent (dry run) and `node scripts/voice.js --confirm` generates all six clips. Generate **one clip per scene** and save them into `audio/` with exactly these names. Each scene stretches or shrinks to fit its clip, so natural pacing is fine.
