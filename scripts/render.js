@@ -18,7 +18,8 @@ function chromePath() {
 (async () => {
   const timeline = buildTimeline(), total = timeline.at(-1).start + timeline.at(-1).duration;
   const from = arg('--from', 0), to = Math.min(arg('--to', total), total);
-  const out = path.join(ROOT, 'build', preview ? 'preview-silent.mp4' : 'video-silent.mp4');
+  const name = args.includes('--name') ? args[args.indexOf('--name') + 1] : null;
+  const out = path.join(ROOT, 'build', (name || (preview ? 'preview' : 'video')) + '-silent.mp4');
   const browser = await chromium.launch({ executablePath: chromePath(), args: ['--allow-file-access-from-files'] });
   const page = await browser.newPage({ viewport: { width: 1920 * scale, height: 1080 * scale }, deviceScaleFactor: 1 });
   await page.goto('file://' + path.join(ROOT, 'src/index.html') + '?render');
@@ -43,7 +44,7 @@ function chromePath() {
   const music = custom || path.join(ROOT, 'build/music.wav');
   if (!fs.existsSync(music)) require('./music');
   console.log(`music: ${path.relative(ROOT, music)}`);
-  const voices = timeline.filter(s => s.voice);
+  const voices = timeline.filter(s => s.voice && s.voiceStart >= from - 0.01 && s.voiceStart < to);
   const inputs = ['-i', out, '-i', music], filters = [];
   voices.forEach((s, k) => { inputs.push('-i', path.join(ROOT, s.voice)); const ms = Math.round((s.voiceStart - from) * 1000);
     filters.push(`[${k + 2}:a]aresample=44100,aformat=channel_layouts=stereo,adelay=${Math.max(0, ms)}|${Math.max(0, ms)}[v${k}]`); });
@@ -57,7 +58,7 @@ function chromePath() {
     filters.push(`[1:a]atrim=start=${from},asetpts=PTS-STARTPTS,volume=0.8,loudnorm=I=-18:TP=-1.5[a]`);
   }
   graph = filters.join(';');
-  const final = path.join(ROOT, 'build', preview ? 'gLOWCOST-explainer-preview.mp4' : 'gLOWCOST-explainer.mp4');
+  const final = path.join(ROOT, 'build', name ? `${name}.mp4` : preview ? 'gLOWCOST-explainer-preview.mp4' : 'gLOWCOST-explainer.mp4');
   const r = spawnSync(ffmpeg(), ['-y', '-loglevel', 'error', ...inputs, '-filter_complex', graph, '-map', '0:v', '-map', '[a]',
     '-c:v', 'copy', '-c:a', 'aac', '-ar', '48000', '-b:a', '192k', '-shortest', final], { stdio: 'inherit' });
   if (r.status !== 0) process.exit(r.status);
