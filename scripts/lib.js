@@ -42,17 +42,18 @@ function buildTimeline() {
     const hold = i === script.scenes.length - 1 ? 1.8 : 0;                    // let the title breathe at the end
     const duration = voice ? Math.max(4, script.leadIn + voiceLen + script.tailPad + hold) : s.seconds;
     const e = { id: s.id, start: +start.toFixed(3), duration: +duration.toFixed(3), authored: s.seconds, voice: voice && path.relative(ROOT, voice), voiceStart: +(start + script.leadIn).toFixed(3), voiceLen };
+    if (s.realtime) e.authored = e.duration;                          // continuous-motion scenes run 1:1, events span the clip
     // time warp: scene-local real seconds → authored seconds, pinned at each sentence start
     const real = [0], auth = [0];
-    if (voice && s.anchors) {
+    if (voice && s.anchors && !s.realtime) {
       const starts = sentenceStarts(voice, s.narration).map(x => x + script.leadIn);
       e.sentences = starts.map(x => +(start + x).toFixed(3));
       s.anchors.forEach((a, k) => { if (starts[k] !== undefined && starts[k] > real.at(-1) + 0.2 && a > auth.at(-1)) { real.push(+starts[k].toFixed(3)); auth.push(a); } });
     }
     // after the last sentence, play the choreography at normal speed if there is room
-    const rest = s.seconds - auth.at(-1);
-    if (e.duration - real.at(-1) > rest + 0.05) { real.push(+(real.at(-1) + rest).toFixed(3)); auth.push(s.seconds); }
-    real.push(e.duration); auth.push(s.seconds); e.warp = { real, auth };
+    const rest = e.authored - auth.at(-1);
+    if (!s.realtime && e.duration - real.at(-1) > rest + 0.05) { real.push(+(real.at(-1) + rest).toFixed(3)); auth.push(e.authored); }
+    real.push(e.duration); auth.push(e.authored); e.warp = s.realtime ? { real: [0, e.duration], auth: [0, e.duration] } : { real, auth };
     start += duration; return e;
   });
   fs.mkdirSync(path.join(ROOT, 'build'), { recursive: true });

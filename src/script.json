@@ -48,7 +48,8 @@
         2.0,
         7.0,
         8.3
-      ]
+      ],
+      "realtime": true
     },
     {
       "id": "weather",
@@ -62,13 +63,13 @@
     },
     {
       "id": "close",
-      "seconds": 9,
+      "seconds": 10,
       "narration": "A small detector, logging on its own, watching particles made by the universe. Even this music was shaped by the muons it counted. This is gLOWCOST.",
       "elevenlabs": "A small detector, logging on its own, watching particles made by the universe. <break time=\"0.3s\" /> Even this music was shaped by the muons it counted. <break time=\"0.4s\" /> This is gLOW COST.",
       "anchors": [
         0.2,
-        3.0,
-        5.4
+        5.0,
+        7.0
       ]
     }
   ]

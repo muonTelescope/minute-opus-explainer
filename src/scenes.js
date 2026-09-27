@@ -330,10 +330,10 @@ function sceneDetection(g, t, D) {
 // Scene 4 — coincidences reject noise
 // =====================================================================
 const coinc = (() => {
+  // events for up to 40 s so the scene can run in real time for however long the narration lasts
   const r = rng(99), noise = [[], [], []], tracks = [];
-  for (let ch = 0; ch < 3; ch++) for (let i = 0; i < 70; i++) noise[ch].push(r() * 12);
-  const times = [2.2, 3.6, 5.0, 6.1, 7.3, 8.4, 9.3, 10.2, 11.0];
-  for (const tt of times) tracks.push({ t: tt, x: 0.2 + r() * 0.6, slope: (r() - 0.5) * 0.9 });
+  for (let ch = 0; ch < 3; ch++) for (let i = 0; i < 230; i++) noise[ch].push(r() * 40);
+  for (let tt = 2.2; tt < 40; tt += 0.9 + r() * 0.8) tracks.push({ t: tt, x: 0.2 + r() * 0.6, slope: (r() - 0.5) * 0.9 });
   return { noise, tracks };
 })();
 
@@ -457,37 +457,71 @@ function sceneWeather(g, t, D) {
 // =====================================================================
 // Scene 6 — the detector and the title
 // =====================================================================
+// Real minute counts (CH01, CH02, CH12) from data/muon_20260616_131649.csv, driving the live tile.
+const LIVE = [[58, 46, 65], [62, 52, 76], [50, 41, 68], [53, 43, 54], [56, 46, 68], [57, 48, 66], [44, 32, 46], [43, 37, 49], [47, 42, 66], [36, 28, 40], [57, 50, 62], [43, 34, 54], [49, 37, 53], [46, 39, 45], [52, 43, 59], [53, 46, 62], [51, 40, 53], [53, 44, 53], [54, 45, 62], [43, 40, 59], [48, 35, 54], [54, 37, 52], [40, 29, 48], [50, 43, 61], [56, 44, 58], [42, 33, 40], [50, 47, 57], [48, 36, 45], [44, 36, 50], [58, 47, 56], [44, 38, 53], [55, 45, 54], [38, 31, 47], [47, 41, 50], [30, 22, 37], [43, 35, 46], [47, 36, 46], [46, 39, 55], [47, 39, 53], [51, 45, 50], [49, 45, 54], [57, 45, 49], [48, 34, 45], [53, 44, 66], [54, 41, 56], [44, 38, 46], [48, 36, 50], [47, 36, 50], [53, 47, 64], [43, 34, 43], [59, 49, 58], [43, 37, 54], [40, 34, 49], [52, 41, 52], [43, 36, 47], [44, 35, 45], [48, 36, 47], [54, 48, 65], [56, 44, 54], [42, 29, 47], [48, 39, 49], [51, 44, 58], [49, 37, 51], [54, 41, 53], [58, 46, 59], [56, 33, 57], [53, 52, 66], [53, 40, 52], [54, 43, 59], [58, 48, 59], [56, 43, 56], [38, 25, 35], [59, 50, 64], [48, 36, 46], [49, 42, 56], [43, 36, 45], [58, 41, 49], [53, 42, 52], [67, 56, 66], [60, 51, 62], [50, 42, 53], [48, 32, 38], [52, 47, 57], [63, 48, 62], [53, 48, 59], [49, 38, 48], [38, 24, 38], [45, 30, 45], [61, 48, 62], [50, 43, 55], [46, 38, 51], [48, 34, 43], [56, 44, 60], [55, 41, 53], [50, 42, 53], [54, 42, 54], [39, 29, 36], [46, 35, 45], [44, 37, 46], [54, 43, 49], [45, 36, 56], [46, 38, 51], [45, 40, 54], [37, 35, 44], [32, 28, 39], [56, 43, 55], [48, 35, 46], [50, 37, 50], [45, 40, 52], [45, 34, 45], [52, 41, 54], [58, 50, 69], [42, 28, 40], [36, 25, 38], [58, 45, 55], [52, 41, 51], [55, 45, 53], [47, 40, 54], [33, 23, 34], [55, 40, 49], [56, 44, 54]];
+
+// Lock Screen Live Activity, laid out like the app's tile (header, rate + 30-min pair lines, channels + environment).
+function liveTile(g, x, y, w, t, alpha) {
+  const h = 204, period = 2.4;                                      // one detector minute every 2.4 s of video
+  const idx = 29 + Math.floor(t / period) % (LIVE.length - 30), cur = LIVE[idx], age = Math.floor((t % period) / period * 55) + 3;
+  g.save(); g.globalAlpha *= alpha;
+  g.beginPath(); g.roundRect(x, y, w, h, 26); g.fillStyle = 'rgba(18,14,26,0.93)'; g.fill(); g.strokeStyle = 'rgba(255,255,255,0.14)'; g.lineWidth = 1.5; g.stroke();
+  // header
+  muonMark(g, x + 18, y + 20, 20, C.lilac);
+  text(g, 'MuonP4', x + 42, y + 38, { size: 20, weight: 700 });
+  chip(g, 'Physics', x + 128, y + 20, C.phosphor, 1, 14);
+  text(g, `${age} sec ago`, x + w - 20, y + 37, { size: 15, weight: 400, family: MONO, color: C.muted, align: 'right' });
+  // rate
+  const total = cur[0] + cur[1] + cur[2];
+  text(g, String(total), x + 18, y + 116, { size: 52, weight: 500, family: MONO });
+  g.font = font(52, 500, MONO); const nw = g.measureText(String(total)).width;
+  text(g, '/min', x + 26 + nw, y + 114, { size: 16, weight: 400, family: MONO, color: C.phosphor });
+  // last 30 minutes, one line per pair
+  const cx = x + 36 + nw + 64, cw = x + w - 20 - cx, cy = y + 58, ch = 70, series = [0, 1, 2].map(k => LIVE.slice(idx - 29, idx + 1).map(r => r[k]));
+  const all = series.flat(), lo = Math.min(...all), hi = Math.max(...all);
+  series.forEach((sv, k) => { g.beginPath(); sv.forEach((v, i) => { const px = cx + i / 29 * cw, py = cy + ch - (v - lo) / (hi - lo) * ch; i ? g.lineTo(px, py) : g.moveTo(px, py); });
+    g.strokeStyle = PAIRS[k]; g.lineWidth = 2.4; g.lineJoin = 'round'; g.stroke(); });
+  // channels + environment (environment values from the detector screenshot, 27 Sep 2026)
+  let bx = x + 18;
+  for (let k = 0; k < 3; k++) { const lw = chLabel(g, k, bx, y + 168, { size: 21 }); text(g, String(cur[k]), bx + lw + 4, y + 176, { size: 21, weight: 500, family: MONO }); bx += lw + 56; }
+  g.font = font(14, 400, MONO); const env = ['975.7 hPa', ' · ', '24.8 °C'], cols = [C.violet, C.muted, C.phosphor];
+  let ex = x + w - 20 - env.reduce((a, s) => a + g.measureText(s).width, 0);
+  env.forEach((s, i) => { text(g, s, ex, y + 175, { size: 14, weight: 400, family: MONO, color: cols[i] }); g.font = font(14, 400, MONO); ex += g.measureText(s).width; });
+  g.restore();
+}
+
 function sceneClose(g, t, D) {
   backdrop(g, t);
   const fade = 1 - ramp(t, D - 1.0, D);
   g.save(); g.globalAlpha = fade;
-  // detector sketch: three paddles, readout board
+  // detector: three paddles, readout board
   const a1 = ramp(t, 0.2, 1.0);
-  for (let i = 0; i < 3; i++) panel(g, 110, 300 + i * 120, 360, 40, { c: 10, alpha: a1 });
-  panel(g, 530, 380, 200, 160, { c: 18, alpha: a1, border: C.edge });
-  text(g, 'readout', 630, 450, { size: 24, weight: 600, align: 'center', alpha: a1 });
-  text(g, 'SD log', 630, 486, { size: 22, weight: 500, family: MONO, color: C.muted, align: 'center', alpha: a1 });
-  for (let i = 0; i < 3; i++) glowLine(g, 470, 320 + i * 120, 530, 460, C.hairline, 2, a1, 0);
-  // passing muons keep ticking
-  for (let k = 0; k < 4; k++) { const tt = (t + k * 1.3) % 5.2; const x = 190 + k * 70; glowLine(g, x, 240, x + 30, 700, C.lilac, 3, win(tt, 0, 0.8, 0.2) * a1, 14); }
-  // phone with live tile
-  const a2 = ramp(t, 0.8, 1.6), fx = 820, fy = 190;
-  g.save(); g.globalAlpha *= a2; g.beginPath(); g.roundRect(fx, fy, 330, 660, 52); g.fillStyle = '#0B0812'; g.fill(); g.strokeStyle = C.hairline; g.lineWidth = 4; g.stroke(); g.restore();
-  panel(g, fx + 22, fy + 400, 286, 150, { c: 18, alpha: a2 });
-  muonMark(g, fx + 40, fy + 420, 20, C.lilac, a2);
-  text(g, 'MuonP4', fx + 70, fy + 438, { size: 20, weight: 700, alpha: a2 });
-  const live = 19 + 16 + 21;                                    // total = sum of the three pairs shown
-  text(g, String(live), fx + 40, fy + 500, { size: 46, weight: 500, family: MONO, alpha: a2 });
-  text(g, '/min', fx + 108, fy + 500, { size: 18, weight: 400, family: MONO, color: C.phosphor, alpha: a2 });
-  for (let k = 0; k < 3; k++) { const w = chLabel(g, k, fx + 40 + k * 90, fy + 528, { size: 18, alpha: a2 }); text(g, String([19, 16, 21][k]), fx + 44 + k * 90 + w, fy + 535, { size: 18, weight: 500, family: MONO, alpha: a2 }); }
-  // title
-  const a3 = ramp(t, 5.4, 6.2);
-  muonMark(g, 1240, 372, 76, C.lilac, a3);
-  text(g, 'gLOWCOST', 1320, 440, { size: 96, weight: 800, alpha: a3 });
-  text(g, 'a cosmic-muon telescope you can build', 1240, 506, { size: 32, weight: 500, color: C.muted, alpha: ramp(t, 5.9, 6.6) });
-  text(g, 'three paddles · coincidence counting', 1240, 560, { size: 22, weight: 500, family: MONO, color: C.phosphor, alpha: ramp(t, 6.3, 7.0) });
-  text(g, 'logs every minute, with or without a phone', 1240, 594, { size: 22, weight: 500, family: MONO, color: C.phosphor, alpha: ramp(t, 6.5, 7.2) });
-  text(g, 'music: a trio sonata composed from real minute counts · 16 June 2026', 1240, 680, { size: 20, weight: 500, color: C.muted, alpha: ramp(t, 3.0, 3.8) });
+  for (let i = 0; i < 3; i++) panel(g, 90, 330 + i * 120, 340, 40, { c: 10, alpha: a1 });
+  panel(g, 480, 410, 190, 160, { c: 18, alpha: a1, border: C.edge });
+  text(g, 'readout', 575, 480, { size: 24, weight: 600, align: 'center', alpha: a1 });
+  text(g, 'SD log', 575, 516, { size: 22, weight: 500, family: MONO, color: C.muted, align: 'center', alpha: a1 });
+  for (let i = 0; i < 3; i++) glowLine(g, 430, 350 + i * 120, 480, 490, C.hairline, 2, a1, 0);
+  for (let k = 0; k < 4; k++) { const tt = (t + k * 1.3) % 5.2; const x = 160 + k * 70; glowLine(g, x, 270, x + 30, 730, C.lilac, 3, win(tt, 0, 0.8, 0.2) * a1, 14); }
+  // phone Lock Screen with the Live Activity
+  const a2 = ramp(t, 0.8, 1.6), fx = 690, fy = 100, fw = 490, fh = 880;
+  g.save(); g.globalAlpha *= a2;
+  g.beginPath(); g.roundRect(fx, fy, fw, fh, 64); const bg = g.createLinearGradient(0, fy, 0, fy + fh); bg.addColorStop(0, '#1A1426'); bg.addColorStop(1, '#0B0812');
+  g.fillStyle = bg; g.fill(); g.strokeStyle = C.hairline; g.lineWidth = 5; g.stroke();
+  g.beginPath(); g.roundRect(fx + fw / 2 - 60, fy + 18, 120, 34, 17); g.fillStyle = '#000'; g.fill();
+  g.restore();
+  text(g, 'Sunday, September 27', fx + fw / 2, fy + 130, { size: 22, weight: 600, color: C.muted, align: 'center', alpha: a2 });
+  text(g, '9:41', fx + fw / 2, fy + 238, { size: 104, weight: 700, align: 'center', alpha: a2 });
+  liveTile(g, fx + 18, fy + 560, fw - 36, t, a2);
+  // title block, in reading order: title, subtitle, features, then the music credit
+  const glow = win(t, 7.0, 9.0, 0.5);
+  const a3 = ramp(t, 2.2, 3.0);
+  muonMark(g, 1230, 372, 76, C.lilac, a3);
+  g.save(); if (glow > 0) { g.shadowColor = C.lilac; g.shadowBlur = 30 * glow; }
+  text(g, 'gLOWCOST', 1310, 440, { size: 96, weight: 800, alpha: a3 }); g.restore();
+  text(g, 'a cosmic-muon telescope you can build', 1230, 506, { size: 32, weight: 500, color: C.muted, alpha: ramp(t, 2.9, 3.6) });
+  text(g, 'three paddles · coincidence counting', 1230, 560, { size: 22, weight: 500, family: MONO, color: C.phosphor, alpha: ramp(t, 3.5, 4.2) });
+  text(g, 'logs every minute, with or without a phone', 1230, 594, { size: 22, weight: 500, family: MONO, color: C.phosphor, alpha: ramp(t, 3.8, 4.5) });
+  text(g, 'music: a trio sonata composed from real minute counts · 16 June 2026', 1230, 680, { size: 20, weight: 500, color: C.muted, alpha: ramp(t, 5.0, 5.8) });
   g.restore();
 }
 
