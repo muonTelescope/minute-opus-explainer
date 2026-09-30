@@ -13,6 +13,7 @@
   "dependencies": {
     "cmu-pronouncing-dictionary": "^3.0.0",
     "klattsch": "^0.8.0",
-    "playwright-core": "^1.55.0"
+    "playwright-core": "^1.55.0",
+    "three": "^0.170.0"
   }
 }
