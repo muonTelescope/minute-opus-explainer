@@ -1,101 +1,104 @@
 1
-00:00:00,700 --> 00:00:05,168
+00:00:00,700 --> 00:00:06,379
 Right now, particles from deep space are
 slamming into the top of our atmosphere.
 
 2
-00:00:05,368 --> 00:00:09,557
+00:00:06,579 --> 00:00:11,459
 Each collision sets off a shower, and
 among the debris are muons: heavier
 
 3
-00:00:09,607 --> 00:00:10,950
+00:00:11,509 --> 00:00:13,080
 cousins of the electron.
 
 4
-00:00:12,700 --> 00:00:15,466
+00:00:15,020 --> 00:00:18,572
 A muon lives for just two millionths of a
 second.
 
 5
-00:00:15,666 --> 00:00:18,291
+00:00:18,772 --> 00:00:21,606
 That should not be long enough to reach
 the ground.
 
 6
-00:00:18,491 --> 00:00:22,728
+00:00:21,806 --> 00:00:26,770
 But they move so close to the speed of
 light that time stretches for them, and
 
 7
-00:00:22,778 --> 00:00:26,190
+00:00:26,820 --> 00:00:30,820
 about one crosses every square centimetre
 of Earth each minute.
 
 8
-00:00:27,940 --> 00:00:32,288
+00:00:32,570 --> 00:00:37,915
 To catch them, we use tiles of special
 plastic that glow when a muon passes
 
 9
-00:00:32,338 --> 00:00:32,757
+00:00:37,965 --> 00:00:38,491
 through.
 
 10
-00:00:32,957 --> 00:00:37,744
+00:00:38,691 --> 00:00:44,099
 Optical fibres carry that faint flash to a
 silicon photomultiplier, a sensor so
 
 11
-00:00:37,794 --> 00:00:41,050
+00:00:44,149 --> 00:00:47,830
 sensitive it can respond to single
 particles of light.
 
 12
-00:00:42,800 --> 00:00:46,192
+00:00:49,703 --> 00:00:54,060
 But these sensors also fire at random, all
 on their own.
 
 13
-00:00:46,242 --> 00:00:51,049
+00:00:54,260 --> 00:00:59,026
 So we stack three tiles and only count a
 muon when two of them flash within the
 
 14
-00:00:51,099 --> 00:00:55,966
+00:00:59,076 --> 00:01:01,464
 same few hundred billionths of a second.
-Random noise almost never lines up like
 
 15
-00:00:56,016 --> 00:00:57,380
+00:01:01,664 --> 00:01:04,461
+Random noise almost never lines up like
 that.
-A real muon does.
 
 16
-00:00:59,130 --> 00:01:02,620
+00:01:04,661 --> 00:01:06,380
+A real muon does.
+
+17
+00:01:08,130 --> 00:01:12,368
 Count them minute by minute, and something
 surprising appears.
 
-17
-00:01:02,820 --> 00:01:07,737
+18
+00:01:12,568 --> 00:01:18,259
 When air pressure rises, there is more air
 overhead to stop muons, and the count
 
-18
-00:01:07,787 --> 00:01:08,110
+19
+00:01:18,309 --> 00:01:18,690
 drops.
 
-19
-00:01:09,860 --> 00:01:14,338
+20
+00:01:20,618 --> 00:01:26,742
 A small detector, logging on its own,
 watching particles made by the universe.
 
-20
-00:01:14,538 --> 00:01:17,641
+21
+00:01:26,942 --> 00:01:31,311
 Even this music was shaped by the muons it
 counted.
 
-21
-00:01:17,841 --> 00:01:19,180
+22
+00:01:31,511 --> 00:01:33,400
 This is gLOWCOST.
 

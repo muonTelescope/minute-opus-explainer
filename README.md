@@ -1,13 +1,13 @@
 # gLOWCOST explainer
 
-An 82-second explainer about the gLOWCOST cosmic-muon detector, for students and the general public.
+A 95-second explainer about the gLOWCOST cosmic-muon detector, for students and the general public.
 - **Visuals:** every frame is drawn in code on an HTML canvas, in the style of the gLOWCOST iPhone app.
 - **Music:** a trio sonata in the manner of Corelli, composed and synthesised in code, with its choices seeded by real detector minute counts (`data/muon_20260616_131649.csv`).
-- **Narration:** eSpeak NG with the MBROLA `us1` female voice.
+- **Narration:** ElevenLabs **Eleven v4** with the voice "Lynda - Bright, Inviting, and Clear".
 
-No footage, samples or paid services are used.
+No footage or samples are used; the narration is the only generated input from outside the repo.
 
-**▶ Watch:** [`media/gLOWCOST-explainer.mp4`](media/gLOWCOST-explainer.mp4) (1920×1080, 30 fps, 82 s). Closed captions: [`media/gLOWCOST-explainer.srt`](media/gLOWCOST-explainer.srt) (a separate file, not burned in).
+**▶ Watch:** [`media/gLOWCOST-explainer.mp4`](media/gLOWCOST-explainer.mp4) (1920×1080, 30 fps, 95 s). Closed captions: [`media/gLOWCOST-explainer.srt`](media/gLOWCOST-explainer.srt) (a separate file, not burned in).
 
 <p>
 <img src="media/still-8.jpg" width="32%" alt="Cosmic-ray air shower">
@@ -56,22 +56,23 @@ Useful pieces:
 
 ## Narration and timing
 
-- **Voice:** eSpeak NG `mb-us1`, run at 165 wpm with no inserted word gaps. It is then slowed to 0.9× without changing pitch, and smoothed:
-  - soxr resampling;
-  - the buzz and sibilance softened;
-  - gentle compression;
-  - a small room.
-
-  Settings: `--speed`, `--pitch` and `--tempo` in `scripts/espeak-voice.js`.
-- **Scene length:** 0.7 s lead-in + clip + 1.0 s tail; the last scene holds an extra 1.8 s.
-- **Sentence sync:** the pauses between sentences are detected in each clip, and each scene is time-warped so its visual beats (`anchors` in `src/script.json`) start as that sentence is spoken. After the last sentence the animation plays at normal speed.
-- **Coincidence scene:** marked `realtime`. It plays at constant speed for the whole clip, so its scrolling timelines never visibly speed up.
-- **Captions:** they follow the same sentence timings.
+- **Voice:** ElevenLabs **Eleven v4**, voice "Lynda - Bright, Inviting, and Clear" (`SB13jgWjPxi4e4JoTT1H`). The scripts are in `src/script.json` → `elevenlabsV4`.
+- **Expressive markup (v4):**
+  - audio tags that set the tone: `[curious]`, `[warmly]`, `[excited]`, `[mischievously]`, `[softly]`;
+  - `[pause]` and `[long pause]` between sentences;
+  - ellipses (…) and an em-dash for smaller beats;
+  - capitals for emphasis ("should NOT be long enough");
+  - IPA for the name: `/ɡloʊ kɔst/`.
+- **Clips:** the six clips are committed in `audio/eleven/` and copied to `audio/NN-id.mp3` for rendering. To regenerate them, run `ELEVENLABS_API_KEY=… node scripts/voice.js --confirm`, which uses the v4 text, model and voice from `script.json`.
+- **Scene length:** 0.7 s lead-in + clip + 1.0 s tail.
+- **Sentence sync:** the pauses between sentences (the `[pause]` tags) are detected in each clip, and each scene is time-warped so its visual beats (`anchors`) start as that sentence is spoken. After the last sentence the animation plays at normal speed.
+- **Coincidence scene:** marked `realtime`. It plays at constant speed for the whole clip.
+- **Captions:** they follow the detected sentence timings in every scene.
 - **Mix:**
   - music bed at 0.25, side-chain ducked under the voice;
   - loudness-normalised to −16 LUFS;
   - AAC at 48 kHz.
-- **Alternatives:** `scripts/klattsch-voice.mjs` (formant synthesis) and `scripts/voice.js` (ElevenLabs) remain.
+- **Fallback:** the eSpeak NG voice remains available: run `node scripts/espeak-voice.js` and remove the `.mp3` clips from `audio/`.
 
 ## Other narration sources
 

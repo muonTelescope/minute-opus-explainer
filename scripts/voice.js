@@ -6,17 +6,17 @@
 const fs = require('fs'), path = require('path'), { ROOT, script } = require('./lib');
 const args = process.argv.slice(2), confirm = args.includes('--confirm'), only = args.includes('--only') ? +args[args.indexOf('--only') + 1] : null;
 const key = process.env.ELEVENLABS_API_KEY, API = 'https://api.elevenlabs.io';
-const MODEL = process.env.ELEVENLABS_MODEL || 'eleven_multilingual_v2';
+const MODEL = process.env.ELEVENLABS_MODEL || script.voiceModel || 'eleven_v4';
 const SETTINGS = { stability: 0.55, similarity_boost: 0.75, style: 0.15, use_speaker_boost: true };
 
 (async () => {
-  const jobs = script.scenes.map((s, i) => ({ n: i + 1, id: s.id, text: s.elevenlabs, file: path.join(ROOT, 'audio', `${String(i + 1).padStart(2, '0')}-${s.id}.mp3`) }))
+  const jobs = script.scenes.map((s, i) => ({ n: i + 1, id: s.id, text: s.elevenlabsV4 || s.elevenlabs, file: path.join(ROOT, 'audio', `${String(i + 1).padStart(2, '0')}-${s.id}.mp3`) }))
     .filter(j => only === null || j.n === only);
   console.log(`voice "${script.voice}", model ${MODEL}, ${jobs.length} clip(s), ~${jobs.reduce((a, j) => a + j.text.length, 0)} characters`);
   for (const j of jobs) console.log(`  ${path.relative(ROOT, j.file)}: ${j.text}`);
   if (!confirm) { console.log('\nDry run. Nothing sent. Re-run with --confirm to generate.'); return; }
   if (!key) throw new Error('Set ELEVENLABS_API_KEY');
-  let voiceId = process.env.ELEVENLABS_VOICE_ID;
+  let voiceId = process.env.ELEVENLABS_VOICE_ID || script.voiceId;
   if (!voiceId) {
     const name = script.voice.split(' - ')[0];
     const r = await fetch(`${API}/v2/voices?search=${encodeURIComponent(name)}&page_size=50`, { headers: { 'xi-api-key': key } });

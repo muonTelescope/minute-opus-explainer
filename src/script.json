@@ -15,7 +15,8 @@
       "anchors": [
         0.5,
         2.4
-      ]
+      ],
+      "elevenlabsV4": "[curious] Right now, particles from deep space are slamming into the top of our atmosphere. [pause] Each collision sets off a shower… and among the debris are muons: heavier cousins of the electron."
     },
     {
       "id": "relativity",
@@ -26,7 +27,8 @@
         0.5,
         1.6,
         3.0
-      ]
+      ],
+      "elevenlabsV4": "[warmly] A muon lives for just two millionths of a second. [pause] That should NOT be long enough to reach the ground. [pause] [excited] But they move so close to the speed of light that time stretches for them… [warmly] and about one crosses every square centimetre of Earth, each minute."
     },
     {
       "id": "detection",
@@ -36,7 +38,8 @@
       "anchors": [
         0.3,
         2.5
-      ]
+      ],
+      "elevenlabsV4": "[curious] To catch them, we use tiles of special plastic that glow when a muon passes through. [pause] Optical fibres carry that faint flash to a silicon photomultiplier — a sensor so sensitive it can respond to single particles of light."
     },
     {
       "id": "coincidence",
@@ -49,7 +52,8 @@
         7.0,
         8.3
       ],
-      "realtime": true
+      "realtime": true,
+      "elevenlabsV4": "[mischievously] But these sensors also fire at random, all on their own. [pause] So we stack three tiles, and only count a muon when two of them flash within the same few hundred billionths of a second. [pause] Random noise almost never lines up like that. [warmly] A real muon does."
     },
     {
       "id": "weather",
@@ -59,7 +63,8 @@
       "anchors": [
         0.5,
         3.2
-      ]
+      ],
+      "elevenlabsV4": "[curious] Count them minute by minute, and something surprising appears. [pause] When air pressure rises, there's more air overhead to stop muons… and the count drops."
     },
     {
       "id": "close",
@@ -70,7 +75,10 @@
         0.2,
         5.0,
         7.0
-      ]
+      ],
+      "elevenlabsV4": "[softly] A small detector, logging on its own, watching particles made by the universe. [pause] [warmly] Even this music was shaped by the muons it counted. [long pause] This is /ɡloʊ kɔst/."
     }
-  ]
+  ],
+  "voiceId": "SB13jgWjPxi4e4JoTT1H",
+  "voiceModel": "eleven_v4"
 }
